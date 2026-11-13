@@ -1,0 +1,20 @@
+{
+  "dags/sql/dq/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "dags/sql/dq/gate_mart_mart_daily_branch_openings.sql": "8f10af81a3c0c6efa9827a18fc62f20e4d11795eefe514e94b5ebbafdf61cbd9",
+  "dags/sql/dq/gate_raw_mart_daily_branch_openings.sql": "9c4e0ee90206984acfe50d8b88e4a7fd2a50e30c8ae3977c9a196d8e1dd6c116",
+  "dags/sql/dq/gate_stg_mart_daily_branch_openings.sql": "fdb84462f3628f1bd5c5a3bb173fa130011fdb5a1747eaf253db68ab06a75e05",
+  "docs/architecture/pii_columns.md": "8c42a3dafc4f5fab3e4df97217467556e7436a4381ca78a76849ee7d4d3e5aa2",
+  "docs/requirements/mart_daily_branch_openings.contract.json": "563e9c174b7f173726055cd80c33dff78ac73c9f073c3c6656e574eb53668af1",
+  "docs/requirements/mart_daily_branch_openings.md": "85a930a1cc058acef5d52eb3a4454f5c1dce4b4df7f530321b3217adb1ccf8b6",
+  "docs/requirements/mart_daily_branch_openings_checks/l3/C-01.sql": "01a869c94376be796f78615f275fae20f1e23d35f297996c558ffc44d4f6ab66",
+  "docs/requirements/mart_daily_branch_openings_checks/l3/C-02.sql": "246ca0870f5b37416ed5c97974e517b5e76ea5203400641ac767a76162f53430",
+  "docs/requirements/mart_daily_branch_openings_checks/l3/C-03.sql": "f4f36ab8e9a84113880207895a2bc914057085cf8fcf640c7eb6e7a27a831c54",
+  "docs/requirements/mart_daily_branch_openings_checks/l3/C-04.sql": "9b0834fd6578309647a6a430a9f6ac330b5109020016a2c25d58e42760fbbaf2",
+  "docs/requirements/mart_daily_branch_openings_checks/l3/C-05.sql": "3004ed7337baeaee220aa142c10526afba880a7308203d3b17ac594871c2f772",
+  "docs/requirements/mart_daily_branch_openings_checks/l4/C-06.sql": "f38869cd5f15054be580fceeba78c0b4b42d6b8bac17ec85def8afced6438445",
+  "docs/requirements/mart_daily_branch_openings_checks/l4/C-07.sql": "e6d81606f64d272c210361f133ec74d4913a84479e9f12b4ceaff0a04cbf17a6",
+  "docs/requirements/mart_daily_branch_openings_checks/l4/C-08.sql": "4144990bfff5a95ee2ac5fca97cc81c9ad1b2d5dd6790c403d9cf8220efdca52",
+  "docs/requirements/mart_daily_branch_openings_checks/l4/C-09.sql": "2da6c924e334b0f1bd12e967e0ca023b46fafb66a2940db551eb2eb43fe21d38",
+  "docs/requirements/mart_daily_branch_openings_checks/l4/I-01.sql": "cb38e74d22123831dcf8dcf3420e78b78cefb401f601bfa637979106827769e4",
+  "docs/requirements/mart_daily_branch_openings_checks/l5/I-02.sql": "c0c0081d087da668cf1ae56641b82660fdfee3facca896072e5e5dd6905846a0"
+}
