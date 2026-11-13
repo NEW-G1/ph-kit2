@@ -15,7 +15,14 @@ from airflow.models.param import Param
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 
 # task id: [상류 task id]. contract의 dag.tasks와 같아야 한다 (task id만 적는다)
-UPSTREAM = {}
+UPSTREAM = {
+    "raw_locations": [],
+    "gate_raw_mart_daily_branch_openings": ["raw_locations"],
+    "stg_branch_opening": ["gate_raw_mart_daily_branch_openings"],
+    "gate_stg_mart_daily_branch_openings": ["stg_branch_opening"],
+    "mart_daily_branch_openings": ["gate_stg_mart_daily_branch_openings"],
+    "gate_mart_mart_daily_branch_openings": ["mart_daily_branch_openings"],
+}
 
 SQL_ROOT = "/opt/airflow/dags/harness/sql"
 CONFIG = json.loads(Path(__file__).with_name("harness_config.json").read_text(encoding="utf-8"))

@@ -1,0 +1,91 @@
+{
+  "task": "raw_locations",
+  "iteration": 1,
+  "contract_version": 1,
+  "request_kind": "new_build",
+  "modules": {
+    "expert": {
+      "on": [],
+      "version": null
+    }
+  },
+  "ts": "2026-11-13T11:21:25+09:00",
+  "bytes_total": 56653184,
+  "rungs": [
+    {
+      "rung": "L0",
+      "ds": null,
+      "status": "pass",
+      "metrics": {
+        "stage": "contract",
+        "load_tasks": 3,
+        "gate_tasks": 3,
+        "tables": 3,
+        "checks": 11,
+        "traces": 11,
+        "dag": "pass"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L1",
+      "ds": "2026-11-13",
+      "status": "pass",
+      "metrics": {
+        "bytes_processed": 0,
+        "bytes_accuracy": "LOWER_BOUND"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L2",
+      "ds": "2026-11-13",
+      "status": "pass",
+      "metrics": {
+        "dataset": "ai_dev",
+        "table": "raw_locations"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L3",
+      "ds": "2026-11-13",
+      "status": "pass",
+      "metrics": {
+        "gate": "gate_raw_mart_daily_branch_openings",
+        "gate_sha256": "9c4e0ee90206984acfe50d8b88e4a7fd2a50e30c8ae3977c9a196d8e1dd6c116",
+        "checks": [
+          "C-01"
+        ]
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L4",
+      "ds": "2026-11-13",
+      "status": "pass",
+      "metrics": {
+        "checks": []
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L5",
+      "ds": "2026-11-13",
+      "status": "pass",
+      "metrics": {
+        "row_count": "81496",
+        "checks": []
+      },
+      "error_type": null,
+      "error_class": null
+    }
+  ],
+  "verdict": "pass",
+  "halt_reason": null
+}
