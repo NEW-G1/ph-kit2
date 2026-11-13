@@ -1,0 +1,159 @@
+{
+  "mart": "mart_daily_branch_openings",
+  "version": 1,
+  "reverts_to": null,
+  "requested_by": "requester1",
+  "requirements": [
+    {"id": "R-01", "text": "개설일별 신규 지점 개설 건수(new_branch_cnt)를 일자별 전국 1행으로 만든다", "section": 3},
+    {"id": "R-02", "text": "본점, 모든 사무소 유형, 1900년 이전 개설일을 제외하지 않고 센다", "section": 3},
+    {"id": "R-03", "text": "개설이 있는 날짜만 행으로 만든다 (0건인 날짜는 행 없음)", "section": 9},
+    {"id": "R-04", "text": "mart 건수 합계와 행 수가 원천과 오차 0으로 일치한다", "section": 4},
+    {"id": "R-05", "text": "stg의 지점 키는 고유하고 개설일에 NULL이 없다", "section": 4},
+    {"id": "R-06", "text": "같은 날짜로 2회 연속 실행해도 결과가 같다", "section": 7}
+  ],
+  "sources": [
+    "bigquery-public-data.fdic_banks.locations"
+  ],
+  "load": {"mode": "snapshot"},
+  "interview": {
+    "metrics": [
+      {
+        "name": "new_branch_cnt",
+        "formula": "개설일(date_established)이 같은 사무소의 branch_fdic_uninum 고유 개수",
+        "unit": "건",
+        "base_date": "개설일 (established_date)",
+        "exclude": "없음. 본점(main_office TRUE), 모든 service_type, 1900년 이전 개설일 모두 포함",
+        "numerator": null,
+        "denominator": null
+      }
+    ],
+    "grain": "mart는 한 snapshot_date 파티션 안에서 개설일 1일 = 1행 (개설이 있는 날짜만). stg는 지점 1곳 = 1행",
+    "keys": ["snapshot_date", "established_date"],
+    "assumptions": [
+      "지점 1곳의 식별자는 branch_fdic_uninum이다 (81496건 모두 고유, NULL 0건)",
+      "개설일은 date_established이고 NULL이 없어 제외·대체 규칙이 필요 없다",
+      "원천은 2022-10 이후 갱신되지 않아 매일 같은 값이 쌓인다. snapshot_date는 실행일이며 개설일과 무관하다",
+      "원천의 모든 행은 사무소 1곳이며 같은 사무소가 중복 행으로 들어 있지 않다",
+      "0건인 날짜는 행을 만들지 않는다 (요청자 답변)"
+    ],
+    "out_of_scope": [
+      "주·도시·기관별 등 차원 분해",
+      "폐점·이전·합병 추적",
+      "개설이 없는 날짜를 0건으로 채우는 달력 보정",
+      "지점 주소·기관명 등 상세 컬럼의 stg·mart 전달"
+    ]
+  },
+  "tables": [
+    {
+      "name": "raw_locations",
+      "name_ko": "원천 사무소 위치 원본",
+      "layer": "raw",
+      "task": "raw_locations",
+      "grain": "원천 locations 1행 = 1행 (사무소 1곳). snapshot_date 파티션마다 원천 전체를 가공 없이 복사",
+      "keys": ["snapshot_date", "branch_fdic_uninum"],
+      "columns": [
+        {"name": "snapshot_date", "name_ko": "스냅샷 날짜", "type": "DATE", "description": "실행 날짜 (Airflow ds). 파티션 키"},
+        {"name": "fdic_certificate_number", "name_ko": "FDIC 인증 번호", "type": "STRING", "description": "FDIC가 금융기관에 부여한 고유 번호"},
+        {"name": "institution_name", "name_ko": "기관명", "type": "STRING", "description": "금융기관의 법적 명칭"},
+        {"name": "branch_name", "name_ko": "지점명", "type": "STRING", "description": "지점 이름"},
+        {"name": "branch_number", "name_ko": "지점 번호", "type": "STRING", "description": "지점에 해당하는 사무소 번호"},
+        {"name": "main_office", "name_ko": "본점 여부", "type": "BOOL", "description": "기관의 본점이면 TRUE"},
+        {"name": "branch_address", "name_ko": "지점 주소", "type": "STRING", "description": "지점이 위치한 도로명 주소 (기관 소재지)"},
+        {"name": "branch_city", "name_ko": "지점 도시", "type": "STRING", "description": "지점이 위치한 도시"},
+        {"name": "zip_code", "name_ko": "우편번호", "type": "STRING", "description": "지점 소재지 우편번호 앞 5자리"},
+        {"name": "branch_county", "name_ko": "지점 카운티", "type": "STRING", "description": "지점이 위치한 카운티"},
+        {"name": "county_fips_code", "name_ko": "카운티 FIPS 코드", "type": "STRING", "description": "주와 카운티를 나타내는 5자리 FIPS 코드"},
+        {"name": "state", "name_ko": "주 약어", "type": "STRING", "description": "지점이 위치한 주 약어"},
+        {"name": "state_name", "name_ko": "주 이름", "type": "STRING", "description": "지점이 위치한 주 이름"},
+        {"name": "institution_class", "name_ko": "기관 분류", "type": "STRING", "description": "FDIC가 헌장 유형, 감독기관 등에 따라 부여한 기관 분류 코드"},
+        {"name": "cbsa_fips_code", "name_ko": "CBSA FIPS 코드", "type": "STRING", "description": "핵심 기반 통계 지역(CBSA) 코드"},
+        {"name": "cbsa_name", "name_ko": "CBSA 이름", "type": "STRING", "description": "핵심 기반 통계 지역(CBSA) 이름"},
+        {"name": "cbsa_division_flag", "name_ko": "CBSA 구역 여부", "type": "BOOL", "description": "CBSA 구역 소속 여부"},
+        {"name": "cbsa_division_fips_code", "name_ko": "CBSA 구역 FIPS 코드", "type": "INT64", "description": "CBSA 구역 코드"},
+        {"name": "cbsa_division_name", "name_ko": "CBSA 구역 이름", "type": "STRING", "description": "CBSA 구역 이름"},
+        {"name": "cbsa_metro_flag", "name_ko": "대도시권 여부", "type": "BOOL", "description": "대도시 통계 지역 소속 여부"},
+        {"name": "cbsa_metro_fips_code", "name_ko": "대도시권 FIPS 코드", "type": "STRING", "description": "대도시 통계 지역 코드"},
+        {"name": "cbsa_metro_name", "name_ko": "대도시권 이름", "type": "STRING", "description": "대도시 통계 지역 이름"},
+        {"name": "cbsa_micro_flag", "name_ko": "소도시권 여부", "type": "BOOL", "description": "소도시 통계 지역 소속 여부"},
+        {"name": "csa_flag", "name_ko": "CSA 여부", "type": "BOOL", "description": "통합 통계 지역(CSA) 소속 여부"},
+        {"name": "csa_fips_code", "name_ko": "CSA FIPS 코드", "type": "STRING", "description": "통합 통계 지역(CSA) 코드"},
+        {"name": "csa_name", "name_ko": "CSA 이름", "type": "STRING", "description": "통합 통계 지역(CSA) 이름"},
+        {"name": "date_established", "name_ko": "개설일", "type": "DATE", "description": "지점이 영업을 시작한 날짜"},
+        {"name": "fdic_uninum", "name_ko": "기관 UNINUM", "type": "STRING", "description": "지점을 소유한 기관의 FDIC UNINUM"},
+        {"name": "last_updated", "name_ko": "정보 갱신일", "type": "DATE", "description": "기관 정보가 갱신된 날짜"},
+        {"name": "service_type", "name_ko": "사무소 유형", "type": "STRING", "description": "사무소 유형 코드 (11~16 풀서비스, 21~30 제한서비스)"},
+        {"name": "branch_fdic_uninum", "name_ko": "지점 UNINUM", "type": "STRING", "description": "FDIC가 지점에 부여한 고유 식별 번호. 사무소 1곳의 키"}
+      ]
+    },
+    {
+      "name": "stg_branch_opening",
+      "name_ko": "지점 개설 정제",
+      "layer": "stg",
+      "task": "stg_branch_opening",
+      "grain": "한 snapshot_date 파티션 안에서 지점 1곳 = 1행",
+      "keys": ["snapshot_date", "branch_fdic_uninum"],
+      "columns": [
+        {"name": "snapshot_date", "name_ko": "스냅샷 날짜", "type": "DATE", "description": "실행 날짜 (Airflow ds). 파티션 키"},
+        {"name": "branch_fdic_uninum", "name_ko": "지점 UNINUM", "type": "STRING", "description": "FDIC가 지점에 부여한 고유 식별 번호. 지점 1곳의 키"},
+        {"name": "established_date", "name_ko": "개설일", "type": "DATE", "description": "지점 개설일 (원천 date_established). 본점과 모든 사무소 유형 포함"}
+      ]
+    },
+    {
+      "name": "mart_daily_branch_openings",
+      "name_ko": "일별 신규 지점 개설 건수",
+      "layer": "mart",
+      "task": "mart_daily_branch_openings",
+      "grain": "한 snapshot_date 파티션 안에서 개설일 1일 = 1행 (개설이 있는 날짜만)",
+      "keys": ["snapshot_date", "established_date"],
+      "columns": [
+        {"name": "snapshot_date", "name_ko": "스냅샷 날짜", "type": "DATE", "description": "실행 날짜 (Airflow ds). 파티션 키"},
+        {"name": "established_date", "name_ko": "개설일", "type": "DATE", "description": "지점 개설일. 이 날짜에 개설된 지점을 센다"},
+        {"name": "new_branch_cnt", "name_ko": "신규 지점 개설 건수", "type": "INT64", "description": "그 개설일에 개설된 지점의 고유 개수. 본점과 모든 사무소 유형, 1900년 이전 포함. 제외 조건 없음"}
+      ]
+    }
+  ],
+  "dag": {
+    "tasks": [
+      {"id": "raw_locations", "kind": "load", "layer": "raw", "upstream": []},
+      {"id": "gate_raw_mart_daily_branch_openings", "kind": "gate", "layer": "raw", "upstream": ["raw_locations"]},
+      {"id": "stg_branch_opening", "kind": "load", "layer": "stg", "upstream": ["gate_raw_mart_daily_branch_openings"]},
+      {"id": "gate_stg_mart_daily_branch_openings", "kind": "gate", "layer": "stg", "upstream": ["stg_branch_opening"]},
+      {"id": "mart_daily_branch_openings", "kind": "load", "layer": "mart", "upstream": ["gate_stg_mart_daily_branch_openings"]},
+      {"id": "gate_mart_mart_daily_branch_openings", "kind": "gate", "layer": "mart", "upstream": ["mart_daily_branch_openings"]}
+    ]
+  },
+  "checks": {
+    "gates": [
+      {"id": "C-01", "rule": "raw_locations 당일 파티션에 행이 1개 이상 존재한다", "rung": "L3", "written_by": "verifier"},
+      {"id": "C-02", "rule": "stg_branch_opening의 branch_fdic_uninum은 당일 파티션 안에서 고유하고 NULL이 없다", "rung": "L3", "written_by": "verifier"},
+      {"id": "C-03", "rule": "stg_branch_opening의 established_date에 NULL이 없다", "rung": "L3", "written_by": "verifier"},
+      {"id": "C-04", "rule": "mart_daily_branch_openings의 established_date는 당일 파티션 안에서 고유하다", "rung": "L3", "written_by": "verifier"},
+      {"id": "C-05", "rule": "mart_daily_branch_openings의 new_branch_cnt는 모든 행에서 1 이상이다", "rung": "L3", "written_by": "verifier"}
+    ],
+    "reconciliation": [
+      {"id": "C-06", "rule": "stg_branch_opening 당일 행 수는 원천 locations 행 수와 같다 (오차 0)", "rung": "L4", "written_by": "verifier"},
+      {"id": "C-07", "rule": "mart_daily_branch_openings의 new_branch_cnt 합계는 원천 locations 행 수와 같다 (오차 0)", "rung": "L4", "written_by": "verifier"},
+      {"id": "C-08", "rule": "mart_daily_branch_openings 당일 행 수는 원천 date_established의 서로 다른 날짜 수와 같다 (오차 0)", "rung": "L4", "written_by": "verifier"},
+      {"id": "C-09", "rule": "mart_daily_branch_openings의 날짜별 new_branch_cnt는 원천에서 date_established별로 센 branch_fdic_uninum 고유 개수와 모든 날짜에서 같다", "rung": "L4", "written_by": "verifier"}
+    ],
+    "invariants": [
+      {"id": "I-01", "rule": "mart_daily_branch_openings의 established_date 최솟값과 최댓값은 원천 date_established의 최솟값과 최댓값과 같다 (날짜 필터가 없다는 확인)", "rung": "L4", "written_by": "verifier"},
+      {"id": "I-02", "rule": "같은 ds로 2회 연속 실행한 뒤 mart_daily_branch_openings의 행 수와 new_branch_cnt 체크섬이 같다", "rung": "L5", "written_by": "verifier"}
+    ]
+  },
+  "traces_to": [
+    {"req": "R-01", "check": "C-09", "rung": "L4"},
+    {"req": "R-01", "check": "C-04", "rung": "L3"},
+    {"req": "R-02", "check": "C-07", "rung": "L4"},
+    {"req": "R-02", "check": "I-01", "rung": "L4"},
+    {"req": "R-03", "check": "C-08", "rung": "L4"},
+    {"req": "R-03", "check": "C-05", "rung": "L3"},
+    {"req": "R-04", "check": "C-07", "rung": "L4"},
+    {"req": "R-04", "check": "C-06", "rung": "L4"},
+    {"req": "R-05", "check": "C-02", "rung": "L3"},
+    {"req": "R-05", "check": "C-03", "rung": "L3"},
+    {"req": "R-06", "check": "I-02", "rung": "L5"}
+  ],
+  "schedule": {"refresh": "매일 snapshot (원천 전체를 당일 snapshot_date 파티션에 복사하고 전체 재집계)", "retention_days": 90},
+  "modules": {"expert": {"on": [], "version": null}}
+}
