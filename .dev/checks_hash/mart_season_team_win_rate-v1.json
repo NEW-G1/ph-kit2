@@ -1,0 +1,17 @@
+{
+  "dags/sql/dq/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "dags/sql/dq/gate_mart_mart_season_team_win_rate.sql": "2d146d41ca59250c3032ab7a5973f60530c384f314522c3502e0ac8e1d24debc",
+  "dags/sql/dq/gate_raw_mart_season_team_win_rate.sql": "6eba88ed6ef717903098c4617839ef5d99ca04d2cf9b955d8d54f007538aa9f0",
+  "dags/sql/dq/gate_stg_mart_season_team_win_rate.sql": "08ba2f21a06656f647b35e53d076516c743deccd8e03742c17bbf1b43b95c140",
+  "docs/architecture/pii_columns.md": "e364f7e38fa357b35b76db33c66320000ad790b200c2f16d82b7785fe75d9071",
+  "docs/requirements/mart_season_team_win_rate.contract.json": "e6ff2487b378962f8135e943dfc5a2b7af26014a6cf930001d7e6c6ebc8010f8",
+  "docs/requirements/mart_season_team_win_rate.md": "9266c564f39aa1b02bcd28b1536fd1d04b32475f61a8b5a1ef7f33b1c1c79074",
+  "docs/requirements/mart_season_team_win_rate_checks/l3/C-01.sql": "93e9f2f7ba3160f48027c5ce53e5b4a7bf8e368d2d51f5fed9f729ef75042f63",
+  "docs/requirements/mart_season_team_win_rate_checks/l3/C-02.sql": "e1f7261b95ab4757c7db5e312508868a192ea89c5beefc29b90d2e20fb8b6876",
+  "docs/requirements/mart_season_team_win_rate_checks/l3/C-03.sql": "36e9bc8ef716b9a55e7210fd7b64d81e80edcaa1583541d1f2d233d2efa77d60",
+  "docs/requirements/mart_season_team_win_rate_checks/l4/C-04.sql": "090ff6404b7ddf3c688df01f13c04b94cf706280e67840e070259bf93fc52014",
+  "docs/requirements/mart_season_team_win_rate_checks/l4/C-05.sql": "b52176659f63981191706bbb4134cc6fd93e218158b042f56688869db8d70381",
+  "docs/requirements/mart_season_team_win_rate_checks/l4/C-06.sql": "1bdf2c099b89d1496a8d1062734e5275db6b59999752e0ccc56df2ebe54df707",
+  "docs/requirements/mart_season_team_win_rate_checks/l4/I-01.sql": "37640c14b2da4ab66e2f285ca1ec20e9750a35d5b05a03469841cd40e2fd4f4f",
+  "docs/requirements/mart_season_team_win_rate_checks/l5/I-02.sql": "0405e35dd3ba7e213f2f868ae7af1d5b38b2b78ee48037580c5b80a9fb7d189b"
+}
