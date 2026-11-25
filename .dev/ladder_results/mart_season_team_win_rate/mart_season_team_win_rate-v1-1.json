@@ -1,0 +1,99 @@
+{
+  "task": "mart_season_team_win_rate",
+  "iteration": 1,
+  "contract_version": 1,
+  "request_kind": "new_build",
+  "modules": {
+    "expert": {
+      "on": [],
+      "version": null
+    }
+  },
+  "ts": "2026-11-25T11:07:04+09:00",
+  "bytes_total": 85644508,
+  "rungs": [
+    {
+      "rung": "L0",
+      "ds": null,
+      "status": "pass",
+      "metrics": {
+        "stage": "contract",
+        "load_tasks": 3,
+        "gate_tasks": 3,
+        "tables": 3,
+        "checks": 8,
+        "traces": 9,
+        "dag": "pass"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L1",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "bytes_processed": 0,
+        "bytes_accuracy": "LOWER_BOUND"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L2",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "dataset": "ai_dev",
+        "table": "mart_season_team_win_rate"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L3",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "gate": "gate_mart_mart_season_team_win_rate",
+        "gate_sha256": "2d146d41ca59250c3032ab7a5973f60530c384f314522c3502e0ac8e1d24debc",
+        "checks": [
+          "C-01",
+          "C-02"
+        ]
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L4",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "checks": [
+          "C-04",
+          "C-05",
+          "C-06",
+          "I-01"
+        ]
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L5",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "row_count": "13437",
+        "checks": [
+          "I-02"
+        ]
+      },
+      "error_type": null,
+      "error_class": null
+    }
+  ],
+  "verdict": "pass",
+  "halt_reason": null
+}

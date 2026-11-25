@@ -1,0 +1,89 @@
+{
+  "task": "raw_mbb_historical_teams_games",
+  "iteration": 1,
+  "contract_version": 1,
+  "request_kind": "new_build",
+  "modules": {
+    "expert": {
+      "on": [],
+      "version": null
+    }
+  },
+  "ts": "2026-11-25T11:05:43+09:00",
+  "bytes_total": 264742816,
+  "rungs": [
+    {
+      "rung": "L0",
+      "ds": null,
+      "status": "pass",
+      "metrics": {
+        "stage": "contract",
+        "load_tasks": 3,
+        "gate_tasks": 3,
+        "tables": 3,
+        "checks": 8,
+        "traces": 9,
+        "dag": "pass"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L1",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "bytes_processed": 0,
+        "bytes_accuracy": "LOWER_BOUND"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L2",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "dataset": "ai_dev",
+        "table": "raw_mbb_historical_teams_games"
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L3",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "gate": "gate_raw_mart_season_team_win_rate",
+        "gate_sha256": "6eba88ed6ef717903098c4617839ef5d99ca04d2cf9b955d8d54f007538aa9f0",
+        "checks": []
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L4",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "checks": []
+      },
+      "error_type": null,
+      "error_class": null
+    },
+    {
+      "rung": "L5",
+      "ds": "2026-11-25",
+      "status": "pass",
+      "metrics": {
+        "row_count": "571448",
+        "checks": []
+      },
+      "error_type": null,
+      "error_class": null
+    }
+  ],
+  "verdict": "pass",
+  "halt_reason": null
+}
