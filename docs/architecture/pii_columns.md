@@ -5,7 +5,7 @@
 
 > 데이터셋 이름의 출처는 `dags/harness_config.json`입니다.
 
-검토한 원천: `bigquery-public-data.thelook_ecommerce`
+검토한 원천: `bigquery-public-data.ncaa_basketball`
 
 > 위 줄은 이 표를 검토한 원천(`<프로젝트>.<데이터셋>`)입니다. L0는 이 줄이 없거나 `dags/harness_config.json`의 `source`와 다르면 멈춥니다(사람 파일 문제, halt `input_invalid`). 원천을 바꾸면 새 원천의 컬럼을 검토해 이 줄, 목록 표, 표 아래 "확인 기록" 줄 세 곳을 함께 다시 씁니다. 후보는 인터뷰의 "개인정보 후보 찾기"가 메타데이터로 찾고, 확정은 사람이 합니다.
 
@@ -29,16 +29,8 @@
 
 | 원천 테이블 | 컬럼 | 근거 |
 |---|---|---|
-| `users` | `first_name` | 이름. 1단계 stg_users 제외 기준 |
-| `users` | `last_name` | 이름. 1단계 stg_users 제외 기준 |
-| `users` | `email` | 이메일. 1단계 stg_users 제외 기준 |
-| `users` | `street_address` | 주소. 1단계 stg_users 제외 기준 |
-| `users` | `postal_code` | 우편번호. 1단계 stg_users 제외 기준 |
-| `users` | `latitude` | 위도. 1단계 stg_users 제외 기준 |
-| `users` | `longitude` | 경도. 1단계 stg_users 제외 기준 |
-| `users` | `user_geom` | 위경도와 같은 정보 |
-| `events` | `ip_address` | 개인 식별 정보 |
+| (없음) | | 사용할 테이블 3개(mbb_games_sr, mbb_historical_teams_games, mbb_historical_teams_seasons)의 후보 컬럼 이름을 사람이 검토해 개인 식별 컬럼 없음으로 답함 |
 
-확인 기록(원천을 바꾸면 이 줄도 다시 씀): 원천 컬럼 이름은 `bq show --schema`로 확인했습니다(2026-10-29).
+확인 기록(원천을 바꾸면 이 줄도 다시 씀): 후보 컬럼 이름은 판정 스크립트(check_source.py)의 메타데이터 조회로 찾고, 사람이 개인 식별 컬럼 없음으로 확정했습니다(2026-11-25).
 
 개인 식별 컬럼이 없는 원천이면 표에 `| (없음) | | 검토 근거 |` 행 하나만 둡니다. 표가 그냥 비어 있으면 L0가 멈춥니다.
